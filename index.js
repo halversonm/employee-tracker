@@ -37,6 +37,18 @@ const prompt = () => {
                 case "View All Employees":
                     viewAllEmployees()
                     break;
+                case "Add Department":
+                    addDepartment()
+                    break;
+                case "Add Role":
+                    addRole()
+                    break;
+                case "Add Employee":
+                    addEmployee()
+                    break;
+                case "Update Employee Role":
+                    updateEmployeeRole()
+                    break;
             }
         })
 }
@@ -59,6 +71,35 @@ const viewAllRoles = () => {
 
 const viewAllEmployees = () => {
     db.query(`SELECT * FROM employee`, function (err, res) {
+        if (err) throw err;
+        console.table(res)
+        prompt()
+    })
+}
+
+const addDepartment = () => {
+    db.query(``, function (err, res) {
+        if (err) throw err;
+        console.table(res)
+        prompt()
+    })
+}
+const addRole = () => {
+    db.query(``, function (err, res) {
+        if (err) throw err;
+        console.table(res)
+        prompt()
+    })
+}
+const addEmployee = () => {
+    db.query(``, function (err, res) {
+        if (err) throw err;
+        console.table(res)
+        prompt()
+    })
+}
+const updateEmployeeRole = () => {
+    db.query(``, function (err, res) {
         if (err) throw err;
         console.table(res)
         prompt()
