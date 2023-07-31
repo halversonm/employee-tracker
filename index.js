@@ -7,11 +7,11 @@ const db = mysql.createConnection({
     host: "localhost",
     user: process.env.DB_USER,
     password: process.env.DB_PW,
-    database: process.env.DB_NAME 
+    database: process.env.DB_NAME
 })
 
-db.connect(function(err) {
-    if(err) throw err;
+db.connect(function (err) {
+    if (err) throw err;
     console.log("MySQL connected")
     prompt()
 })
@@ -42,16 +42,25 @@ const prompt = () => {
 }
 
 const viewAllDepartments = () => {
-    console.log("test")
-    prompt()
+    db.query(`SELECT * FROM department`, function (err, res) {
+        if (err) throw err;
+        console.table(res)
+        prompt()
+    })
 }
 
 const viewAllRoles = () => {
-    console.log("test")
-    prompt()
+    db.query(`SELECT * FROM role`, function (err, res) {
+        if (err) throw err;
+        console.table(res)
+        prompt()
+    })
 }
 
 const viewAllEmployees = () => {
-    console.log("test")
-    prompt()
+    db.query(`SELECT * FROM employee`, function (err, res) {
+        if (err) throw err;
+        console.table(res)
+        prompt()
+    })
 }
