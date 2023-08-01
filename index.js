@@ -94,21 +94,71 @@ const addDepartment = () => {
 }
 
 const addRole = () => {
+    db.promise().query(`SELECT * FROM department`)
+        .then(([data]) => {
+            const departmentList = data.map(({ id, name }) => name
+                // ({name: name, value: id})
+            )
+            console.log(departmentList)
+
+            inquirer.prompt([
+                {
+                    type: "input",
+                    name: "role-name",
+                    message: "What is the name of the role?",
+                },
+                {
+                    type: "input",
+                    name: "role-salary",
+                    message: "What is the salary of the role?",
+                },
+                {
+                    type: "list",
+                    name: "role-department",
+                    message: "Which department does the role belong to?",
+                    choices: departmentList
+                },
+            ]).then((res) => {
+                console.log(res);
+                db.query(`INSERT INTO role SET ?`, {
+                    name: res.department
+                })
+                console.log(`${res.department} was added to role table!`)
+                prompt()
+            })
+        });
+}
+const addEmployee = () => {
     inquirer.prompt([
         {
             type: "input",
-            name: "department",
-            message: "What department would you like to add?",
-        }
+            name: "employee-first",
+            message: "What is the exmployee's first name?",
+        },
+        {
+            type: "input",
+            name: "employee-last",
+            message: "What is the employee's last name?",
+        },
+        {
+            type: "list",
+            name: "employee-role",
+            message: "What is the employee's role?",
+            choices: []
+        },
+        {
+            type: "list",
+            name: "employee-manager",
+            message: "Who is the employee's manager?",
+            choices: []
+        },
     ]).then((res) => {
         db.query(`INSERT INTO role SET ?`, {
             name: res.department
         })
-        console.log(`${res.department} was added to role table!`)
+        console.log(`Added ${employee - first} ${employee - last} to the database`)
         prompt()
     })
-}
-const addEmployee = () => {
     db.query(``, function (err, res) {
         if (err) throw err;
         console.table(res)
