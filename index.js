@@ -94,40 +94,40 @@ const addDepartment = () => {
 }
 
 const addRole = () => {
-    db.promise().query(`SELECT * FROM department`)
-        .then(([data]) => {
-            const departmentList = data.map(({ id, name }) => name
-                // ({name: name, value: id})
-            )
-            console.log(departmentList)
-
+    db.query(`SELECT * FROM department`, function(err, res) {
+            if(err) throw err
+            const departmentList = res.map(({ name, id }) => ({name: name, value: id}))
             inquirer.prompt([
                 {
                     type: "input",
-                    name: "role-name",
+                    name: "roleName",
                     message: "What is the name of the role?",
                 },
                 {
                     type: "input",
-                    name: "role-salary",
+                    name: "roleSalary",
                     message: "What is the salary of the role?",
                 },
                 {
                     type: "list",
-                    name: "role-department",
+                    name: "roleDep",
                     message: "Which department does the role belong to?",
                     choices: departmentList
                 },
             ]).then((res) => {
                 console.log(res);
                 db.query(`INSERT INTO role SET ?`, {
-                    name: res.department
+                    title: res.roleName,
+                    salary: res.roleSalary,
+                    department_id: res.roleDep
                 })
-                console.log(`${res.department} was added to role table!`)
+                console.log(`${res.roleName} was added to role table!`)
                 prompt()
             })
-        });
-}
+        })
+    }
+
+        
 const addEmployee = () => {
     inquirer.prompt([
         {
@@ -165,6 +165,8 @@ const addEmployee = () => {
         prompt()
     })
 }
+
+
 const updateEmployeeRole = () => {
     db.query(`SELECT * FROM employee`, (err, data) => {
         if (err) throw err;
@@ -184,7 +186,7 @@ const updateEmployeeRole = () => {
                 const params = [];
                 params.push(employee);
 
-                const roleSql = `SELECT * FROM roles`;
+                const roleSql = `SELECT * FROM role`;
 
                 db.query(roleSql, (err, data) => {
                     if (err) throw err;
@@ -213,7 +215,7 @@ const updateEmployeeRole = () => {
                                 if (err) throw err;
                                 console.log("Employee has been updated!");
 
-                                menu();
+                                prompt();
                             });
                         });
                 });
